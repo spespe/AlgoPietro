@@ -7,7 +7,7 @@ import RSIpietro
 
 
 def parameters_generator():
-    instrument = ["dia"]
+    instrument = ["orcl"]
     entrySMA = range(150, 251)
     exitSMA = range(5, 16)
     rsiPeriod = range(2, 11)
