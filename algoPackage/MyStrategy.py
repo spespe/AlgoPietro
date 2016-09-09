@@ -9,10 +9,13 @@ class MyStrategy(strategy.BacktestingStrategy):
         super(MyStrategy, self).__init__(feed, 1000)
         self.__position = None
         self.__instrument = instrument
+        self.__instrument2 = instrument2
         # We'll use adjusted close values instead of regular close values.
         self.setUseAdjustedValues(True)
         self.__sma = ma.SMA(feed[instrument].getPriceDataSeries(), smaPeriod)
         self.__rsi = rsi.RSI(feed[instrument].getPriceDataSeries(),rsiPeriod)
+        self.__sma2 = ma.SMA(feed2[instrument2].getPriceDataSeries(), smaPeriod)
+        self.__rsi2 = rsi.RSI(feed2[instrument2].getPriceDataSeries(),rsiPeriod)
 
     def onEnterOk(self, position):
         execInfo = position.getEntryOrder().getExecutionInfo()
@@ -29,6 +32,11 @@ class MyStrategy(strategy.BacktestingStrategy):
 
     def onEnterCanceled(self, position):
         self.__position = None
+
+    #def getIndicators(self, position):
+    #    rsi= self.__rsi[-1]
+    #    rsi2= self.__rsi2[-1]
+    #    print("RSI: "+rsi+" Rsi2: "+rsi2)
 
     def onBars(self, bars):
         # Wait for enough bars to be available to calculate a SMA.
@@ -75,10 +83,8 @@ def run_strategy(smaPeriod,rsiPeriod):
     feed.addBarsFromCSV("aapl", "C:\\Users\\Spe\\PycharmProjects\\AlgoPietro\\algoPackage\\data\\aapl-2009.csv")
     feed.addBarsFromCSV("aapl", "C:\\Users\\Spe\\PycharmProjects\\AlgoPietro\\algoPackage\\data\\aapl-2010.csv")
 
-
-
     # Evaluate the strategy with the feed.
-    myStrategy = MyStrategy(feed, feed2, "orcl", "aapl", smaPeriod, rsiPeriod)
+    myStrategy = MyStrategy(feed, feed2, "aapl", "orcl", smaPeriod, rsiPeriod)
     myStrategy.run()
     print "Final portfolio value: $%.2f" % myStrategy.getBroker().getEquity()
 
