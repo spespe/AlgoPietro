@@ -82,4 +82,4 @@ def run_strategy(smaPeriod,rsiPeriod):
     myStrategy.run()
     print "Final portfolio value: $%.2f" % myStrategy.getBroker().getEquity()
 
-run_strategy(50,50)
+run_strategy(30,30)
